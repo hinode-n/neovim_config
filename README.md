@@ -1,2 +1,2 @@
-# novim_config
+# neovim_config
 .config/nvimファイルを管理します。
