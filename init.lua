@@ -60,6 +60,15 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
+-- lsp_linesにdiagnosticsを任せるため、built-inのdiagnosticsを無効化
+vim.diagnostic.config({
+  virtual_text = false,
+  -- signs = true,
+  -- udpate_in_insert = true,
+  -- underline = true,
+})
+
 -- [[ Configure plugins ]]
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
@@ -70,7 +79,7 @@ require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
-  'tpope/vim-fugitive',
+  -- 'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
@@ -417,6 +426,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+vim.api.nvim_clear_autocmds({ group = "NvimTree", event = "BufNewFile" })
+
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
@@ -496,7 +507,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'gdscript', 'godot_resource', 'lua', 'python', 'rust', 'toml', 'tsx', 'javascript', 'typescript', 'vue', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'gdscript', 'godot_resource', 'lua', 'python', 'rust', 'toml', 'haskell', 'tsx', 'javascript', 'typescript', 'vue', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = true,
@@ -606,15 +617,16 @@ local on_attach = function(_, bufnr)
 end
 
 -- document existing key chains
-require('which-key').register {
-  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-  ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
-  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-}
+require('which-key').add {
+  {
+    { "", group = "[C]ode" },
+    { "", group = "More git" },
+    { "", group = "[R]ename" },
+    { "", group = "[G]it" },
+    { "", group = "[W]orkspace" },
+    { "", group = "[S]earch" },
+    { "", group = "[D]ocument" },
+  } }
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
@@ -633,10 +645,34 @@ local servers = {
   -- clangd = {},
   -- gopls = {},
   pyright = {},
-  rust_analyzer = {},
-  -- tsserver = {},
+  rust_analyzer = {
+  },
+  ts_ls = {
+    init_options = {
+      plugins = {
+        {
+          name = "@vue/typescript-plugin",
+          location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+          languages = { "javascript", "typescript", "vue" },
+        },
+      },
+    },
+    filetypes = {
+      "javascript",
+      "typescript",
+      "vue",
+    },
+  },
+  hls = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-  volar = {},
+  volar = {
+    filetypes = { "vue", "typescript", "javascript", "javascriptreact", "typescriptreact" },
+    init_options = {
+      vue = {
+        hybridmode = false,
+      }
+    },
+  },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -670,7 +706,7 @@ mason_lspconfig.setup_handlers {
       filetypes = (servers[server_name] or {}).filetypes,
     }
   end,
-  ["rust_analyzer"] = function() end
+  ["hls"] = function() end,
 }
 
 -- [[ Configure nvim-cmp ]]
