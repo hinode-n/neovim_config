@@ -647,12 +647,23 @@ local servers = {
   pyright = {},
   rust_analyzer = {
   },
+  hls = {},
+  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  volar = {
+    filetypes = { "vue", "typescript", "javascript", "javascriptreact", "typescriptreact" },
+    init_options = {
+      vue = {
+        hybridmode = true,
+      }
+    },
+  },
   ts_ls = {
     init_options = {
       plugins = {
         {
           name = "@vue/typescript-plugin",
-          location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+          location = require("mason-registry").get_package("vue-language-server"):get_install_path() ..
+              "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin",
           languages = { "javascript", "typescript", "vue" },
         },
       },
@@ -663,16 +674,7 @@ local servers = {
       "vue",
     },
   },
-  hls = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-  volar = {
-    filetypes = { "vue", "typescript", "javascript", "javascriptreact", "typescriptreact" },
-    init_options = {
-      vue = {
-        hybridmode = false,
-      }
-    },
-  },
+
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
