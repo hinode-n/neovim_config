@@ -414,6 +414,7 @@ vim.keymap.set("n", "sv", "<cmd>vsplit<CR>", { noremap = true, silent = true, de
 -- Move buffers
 vim.keymap.set("n", "bp", "<cmd>bprev<CR>", { noremap = true, silent = true, desc = "[B]uffer [P]rev" })
 vim.keymap.set("n", "bn", "<cmd>bnext<CR>", { noremap = true, silent = true, desc = "[B]uffer [N]xet" })
+vim.keymap.set("n", "bd", "<cmd>bdelete<CR>", { noremap = true, silent = true, desc = "[B]uffer [D]elete" })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -650,10 +651,10 @@ local servers = {
   hls = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
   volar = {
-    filetypes = { "vue", "typescript", "javascript", "javascriptreact", "typescriptreact" },
+    filetypes = { "vue", "typescript", "javascript", "javascriptreact", "typescriptreact", "json" },
     init_options = {
       vue = {
-        hybridmode = true,
+        hybridmode = false,
       }
     },
   },
@@ -671,7 +672,6 @@ local servers = {
     filetypes = {
       "javascript",
       "typescript",
-      "vue",
     },
   },
 

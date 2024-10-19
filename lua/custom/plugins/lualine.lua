@@ -8,13 +8,18 @@ return {
 		require('lualine').setup {
 			options = {
 				icons_enabled = true,
-				theme = 'auto',
-				component_separators = '|',
-				section_separators = '',
+				theme = 'codedark',
+				component_separators = { left = '', right = '' },
+				section_separators = { left = '', right = '' },
 				-- globalstatus = true,
 			},
 			sections = {
-				lualine_c = { 'filename', require('auto-session.lib').current_session_name }
+				lualine_c = { 'filename', require('auto-session.lib').current_session_name },
+				lualine_z = { {
+					function()
+						return os.date('%Y-%m-%d（%a） %H:%M') -- 年月日と時刻を表示
+					end,
+				} }
 			},
 			tabline = {
 				lualine_a = {
@@ -23,12 +28,6 @@ return {
 				lualine_b = {},
 				lualine_c = {
 					{ 'navic' },
-				},
-				lualine_x = {
-					'diff'
-				},
-				lualine_y = {
-					'branch'
 				},
 				lualine_z = {
 					'tabs'
