@@ -11,11 +11,10 @@ return {
 		function _lazygit_toggle()
 			lazygit:toggle()
 		end
-
-		vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
 	end,
 	keys = {
-		{ "<leader>tt", "<cmd>ToggleTerm<CR>", desc = "[T]oogle [T]erm" },
-		{ "<ESC>",      "<C-\\><C-n>",         desc = "change to NORMAL mode", mode = "t" },
+		{ "<leader>tt", "<cmd>ToggleTerm<CR>",            desc = "[T]oogle [T]erm" },
+		{ "<ESC>",      "<C-\\><C-n>",                    desc = "change to NORMAL mode", mode = "t" },
+		{ "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", desc = "open [L]azy[G]it",      mode = "n" },
 	},
 }
