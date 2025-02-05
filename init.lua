@@ -818,7 +818,6 @@ cmp.setup.cmdline(':', {
   })
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
 vim.cmd('let g:vsnip_filetypes = {}')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
