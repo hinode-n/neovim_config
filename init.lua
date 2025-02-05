@@ -174,14 +174,14 @@ require('lazy').setup({
       end,
     },
   },
-  -- {
-  --   -- nightfox theme
-  --   "EdenEast/nightfox.nvim",
-  --   priority = 10,
-  --   config = function()
-  --     vim.cmd.colorscheme "nightfox"
-  --   end,
-  -- },
+  {
+    -- nightfox theme
+    "EdenEast/nightfox.nvim",
+    priority = 10,
+    -- config = function()
+    --   vim.cmd.colorscheme "nordfox"
+    -- end,
+  },
   {
     "dgox16/oldworld.nvim",
     lazy = false,
@@ -204,7 +204,7 @@ require('lazy').setup({
     name = "catppuccin",
     priority = 1000,
     -- config = function()
-    --   vim.cmd.colorscheme "catppuccin"
+    --   vim.cmd.colorscheme "catppuccin-mocha"
     -- end
   },
   {
@@ -276,6 +276,21 @@ require('lazy').setup({
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
+    event = 'VeryLazy',
+    opts = {
+      defaults = {
+        vimgrep_arguments = {
+          "rg",
+          "--color=never",
+          "--no-heading",
+          "--with-filename",
+          "--line-number",
+          "--column",
+          "--smart-case",
+          "--hidden",
+        },
+      },
+    },
     dependencies = {
       'nvim-lua/plenary.nvim',
       -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -494,7 +509,7 @@ vim.keymap.set('n', '<leader>/', function()
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sf', ':Telescope find_files hidden=true<cr>', { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
@@ -651,10 +666,10 @@ local servers = {
   hls = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
   volar = {
-    filetypes = { "vue", "typescript", "javascript", "javascriptreact", "typescriptreact", "json" },
+    filetypes = { "vue", "typescript", "javascript", "javascriptreact", "typescriptreact", "json", "typescript.tsx" },
     init_options = {
       vue = {
-        hybridmode = false,
+        hybridmode = true,
       }
     },
   },
@@ -670,8 +685,7 @@ local servers = {
       },
     },
     filetypes = {
-      "javascript",
-      "typescript",
+      "vue", "typescript", "javascript", "javascriptreact", "typescriptreact", "json", "typescript.tsx"
     },
   },
 
@@ -738,8 +752,8 @@ cmp.setup {
     completeopt = 'menu,menuone,noinsert'
   },
   mapping = cmp.mapping.preset.insert {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-j>'] = cmp.mapping.select_next_item(),
+    ['<C-k>'] = cmp.mapping.select_prev_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete {},

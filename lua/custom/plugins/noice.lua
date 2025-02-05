@@ -4,8 +4,18 @@ return {
 	opts = {
 		messages = {
 			view_search = false,
-		}
+		},
 		-- add any options here
+		routes = {
+			-- rust-analyzer に関するエラーメッセージを抑制する設定
+			{
+				filter = {
+					event = "notify",  -- メッセージが表示される際に
+					find = "rust_analyzer", -- メッセージ内に "rust_analyzer" が含まれている場合
+				},
+				opts = { skip = true }, -- メッセージをスキップ
+			},
+		},
 	},
 	dependencies = {
 		-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
